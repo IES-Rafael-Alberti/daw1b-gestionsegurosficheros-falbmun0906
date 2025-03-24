@@ -5,7 +5,7 @@ class SeguroAuto(numPoliza: Int,
                  importe: Double,
                  val descripcion: String,
                  val combustible: String,
-                 val tipoAuto: TipoAuto,
+                 val tipoAuto: Auto,
                  tipoCobertura: String,
                  val asistenciaCarretera: Boolean,
                  val numPartes: Int
@@ -20,12 +20,12 @@ class SeguroAuto(numPoliza: Int,
 
     override fun calcularImporteAnioSiguiente(interes: Double): Double {
         val ajusteInteres = interes + (2 * numPartes)
-        return getImporte() * (1 + ajusteInteres / 100)
+        return importe * (1 + ajusteInteres / 100)
     }
 
     override fun tipoSeguro() = "SeguroAuto"
 
-    override fun serializar(): String {
-        return "$numPoliza;$dniTitular;${getImporte()};\"$descripcion\";$combustible;$tipoAuto;$tipoCobertura.desc;$asistenciaCarretera;$numPartes;${tipoSeguro()}"
+    override fun serializar(separador: String): String {
+        return "${super.serializar(separador)};\"$descripcion\";$combustible;$tipoAuto;$tipoCobertura.desc;$asistenciaCarretera;$numPartes;${tipoSeguro()}"
     }
 }

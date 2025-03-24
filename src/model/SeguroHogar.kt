@@ -8,18 +8,20 @@ class SeguroHogar(numPoliza: Int,
                   val direccion: String
 ) : Seguro(generateId(), dniTitular, importe) {
 
+
     companion object {
         private var lastId = 100000
         private fun generateId() = lastId++
     }
 
     override fun calcularImporteAnioSiguiente(interes: Double): Double {
-        return getImporte() * (1 + interes / 100)
+        return importe * (1 + interes / 100)
     }
 
     override fun tipoSeguro() = "SeguroHogar"
 
-    override fun serializar(): String {
-        return "$numPoliza;$dniTitular;${getImporte()};$metrosCuadrados;$valorContenido;$direccion;${tipoSeguro()}"
+    override fun serializar(separador: String): String {
+        return "${super.serializar(separador)};$importe;$metrosCuadrados;$valorContenido;$direccion;${tipoSeguro()}"
     }
+
 }
