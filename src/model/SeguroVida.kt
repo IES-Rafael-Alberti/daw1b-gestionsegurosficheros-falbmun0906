@@ -26,7 +26,7 @@ class SeguroVida(numPoliza: Int,
     override fun tipoSeguro() = "SeguroVida"
 
     override fun serializar(separador: String): String {
-        return "${super.serializar(separador)};$importe;$fechaNac;$nivelRiesgo;$indemnizacion;${tipoSeguro()}"
+        return "${super.serializar(separador)}$separador$importe$separador$fechaNac$separador$nivelRiesgo$separador$indemnizacion$separador${tipoSeguro()}"
     }
 
 }

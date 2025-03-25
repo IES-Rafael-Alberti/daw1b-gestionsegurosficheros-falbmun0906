@@ -12,6 +12,17 @@ abstract class Seguro(val numPoliza: Int,
     }
 
     override fun serializar(separador: String): String {
-        return "$numPoliza;$dniTitular;$importe"
+        return "$numPoliza$separador$dniTitular$separador$importe"
+    }
+
+    override fun hashCode(): Int {
+        return numPoliza
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
+        val seguro = other as Seguro
+        return numPoliza == seguro.numPoliza
     }
 }
