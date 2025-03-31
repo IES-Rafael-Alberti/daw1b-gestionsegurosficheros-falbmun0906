@@ -26,8 +26,6 @@ class SeguroAuto(numPoliza: Int,
         return importe * (1 + ajusteInteres / 100)
     }
 
-    override fun tipoSeguro() = "SeguroAuto"
-
     override fun serializar(separador: String): String {
         return "${super.serializar(separador)}$separador\"$descripcion\"$separador$combustible;$tipoAuto;${tipoCobertura.desc}$separador$asistenciaCarretera$separador$numPartes$separador${tipoSeguro()}"
     }

@@ -1,10 +1,19 @@
 package model
 
-class Usuario private constructor (val nombre: String, var clave: String, val perfil: Perfil) : IExportable {
+class Usuario (val nombre: String,
+               clave: String,
+               val perfil: Perfil
+) : IExportable {
+
+    var clave: String = clave
+        private set
 
     companion object {
         fun crearUsuario(datos: List<String>): Usuario {
-            return Usuario(datos[0], datos[1], Perfil.getPerfil(datos[2]))
+            return Usuario(
+                datos[0],
+                datos[1],
+                Perfil.getPerfil(datos[2]))
         }
     }
 
@@ -13,6 +22,10 @@ class Usuario private constructor (val nombre: String, var clave: String, val pe
     }
 
     override fun serializar(separador: String): String {
-        TODO("Not yet implemented")
+        return "$nombre$separador$clave$separador$perfil"
+    }
+
+    override fun toString(): String {
+        return "Usuario (nombre='$nombre', clave='$clave', perfil='$perfil')"
     }
 }

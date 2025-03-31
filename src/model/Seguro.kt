@@ -2,10 +2,14 @@ package model
 
 abstract class Seguro(val numPoliza: Int,
                       private val dniTitular: String,
-                      protected var importe: Double) : IExportable {
+                      protected var importe: Double
+) : IExportable {
 
     abstract fun calcularImporteAnioSiguiente(interes: Double): Double
-    abstract fun tipoSeguro(): String
+
+    fun tipoSeguro(): String {
+        return this::class.simpleName ?: "Desconocido"
+    }
 
     fun getDniTitular(): String {
         return dniTitular
@@ -16,13 +20,12 @@ abstract class Seguro(val numPoliza: Int,
     }
 
     override fun hashCode(): Int {
-        return numPoliza
+        return numPoliza.hashCode()
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other == null || javaClass != other.javaClass) return false
-        val seguro = other as Seguro
-        return numPoliza == seguro.numPoliza
+        if (other !is Seguro) return false
+        return numPoliza == other.numPoliza
     }
 }

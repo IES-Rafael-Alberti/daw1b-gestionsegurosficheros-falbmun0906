@@ -8,6 +8,9 @@ class SeguroVida(numPoliza: Int,
                  val indemnizacion: Double
 ) : Seguro(generateId(), dniTitular, importe) {
 
+
+    // Parsear fecha. DateTimeFormatter.ofPattern("dd/MM/aaaa")
+
     companion object {
         private var lastId = 800000
         private fun generateId() = lastId++
@@ -22,8 +25,6 @@ class SeguroVida(numPoliza: Int,
         }
         return importe * (1 + ajusteInteres / 100)
     }
-
-    override fun tipoSeguro() = "SeguroVida"
 
     override fun serializar(separador: String): String {
         return "${super.serializar(separador)}$separador$importe$separador$fechaNac$separador$nivelRiesgo$separador$indemnizacion$separador${tipoSeguro()}"

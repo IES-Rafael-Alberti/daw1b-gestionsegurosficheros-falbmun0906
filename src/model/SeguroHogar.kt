@@ -44,8 +44,6 @@ class SeguroHogar : Seguro {
         return importe * (1 + interes / 100)
     }
 
-    override fun tipoSeguro() = "SeguroHogar"
-
     override fun serializar(separador: String): String {
         return "${super.serializar(separador)}$separador$importe$separador$metrosCuadrados$separador$valorContenido$separador$direccion$separador${tipoSeguro()}"
     }
