@@ -13,15 +13,28 @@ class SeguroAuto : Seguro {
     val asistenciaCarretera: Boolean
     val numPartes: Int
 
-
     // val tipoCobertura: Cobertura = Cobertura.getCobertura(tipoCobertura)
 
     /*constructor(numPoliza: Int, dniTitular: String, importe: Double) super(numPoliza, dniTitular, importe) {
 
     }*/
     companion object {
-        private var numPolizasAuto = 400000
+        var numPolizasAuto = 400000
         private fun generateId() = numPolizasAuto++
+
+        fun crearSeguro(datos: List<String>): SeguroAuto {
+            val numPoliza = datos[0].toInt()
+            val dniTitular = datos[1]
+            val importe = datos[2].toDouble()
+            val descripcion = datos[3]
+            val combustible = datos[4]
+            val tipoAuto = Auto.getAuto(datos[5])
+            val tipoCobertura = Cobertura.getCobertura(datos[6])
+            val asistenciaCarretera = datos[7].toBoolean()
+            val numPartes = datos[8].toInt()
+
+            return SeguroAuto(numPoliza, dniTitular, importe, descripcion, combustible, tipoAuto, tipoCobertura, asistenciaCarretera, numPartes)
+        }
     }
 
     constructor(dniTitular: String, importe: Double, descripcion: String, combustible: String, tipoAuto: Auto, tipoCobertura: Cobertura, asistenciaCarretera: Boolean, numPartes: Int) :

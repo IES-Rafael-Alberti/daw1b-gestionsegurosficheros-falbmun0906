@@ -1,26 +1,40 @@
 package model
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 class SeguroVida : Seguro {
 
-    val fechaNac: String
+    val fechaNac: LocalDate
     val nivelRiesgo: Riesgo
     val indemnizacion: Double
 
     // Parsear fecha. DateTimeFormatter.ofPattern("dd/MM/aaaa")
 
     companion object {
-        private var numPolizasVida = 800000
+        var numPolizasVida = 800000
         private fun generateId() = numPolizasVida++
+
+        fun crearSeguro(datos: List<String>): SeguroVida {
+            val numPoliza = datos[0].toInt()
+            val dniTitular = datos[1]
+            val importe = datos[2].toDouble()
+            val fechaNac = LocalDate.parse(datos[3], DateTimeFormatter.ofPattern("dd/MM/aaaa"))
+            val nivelRiesgo = Riesgo.getRiesgo(datos[4])
+            val indemnizacion = datos[5].toDouble()
+
+            return SeguroVida(numPoliza, dniTitular, importe, fechaNac, nivelRiesgo, indemnizacion)
+        }
     }
 
-    constructor(dniTitular: String, importe: Double, fechaNac: String, nivelRiesgo: Riesgo, indemnizacion: Double) :
+    constructor(dniTitular: String, importe: Double, fechaNac: LocalDate, nivelRiesgo: Riesgo, indemnizacion: Double) :
             super(numPoliza = SeguroVida.generateId(), dniTitular, importe) {
         this.fechaNac = fechaNac
         this.nivelRiesgo = nivelRiesgo
         this.indemnizacion = indemnizacion
     }
 
-    private constructor(numPoliza: Int, dniTitular: String, importe: Double, fechaNac: String, nivelRiesgo: Riesgo, indemnizacion: Double) :
+    private constructor(numPoliza: Int, dniTitular: String, importe: Double, fechaNac: LocalDate, nivelRiesgo: Riesgo, indemnizacion: Double) :
             super(numPoliza, dniTitular, importe) {
         this.fechaNac = fechaNac
         this.nivelRiesgo = nivelRiesgo
