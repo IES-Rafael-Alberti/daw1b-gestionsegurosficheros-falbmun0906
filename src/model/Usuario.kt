@@ -6,7 +6,7 @@ class Usuario (val nombre: String,
 ) : IExportable {
 
     var clave: String = clave
-        private set
+        protected set
 
     companion object {
         fun crearUsuario(datos: List<String>): Usuario {

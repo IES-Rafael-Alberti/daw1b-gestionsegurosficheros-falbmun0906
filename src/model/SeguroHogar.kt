@@ -8,8 +8,8 @@ class SeguroHogar : Seguro {
     val aniosConstruccion: Int
 
     companion object {
-        private var lastId = 100000
-        private fun generateId() = lastId++
+        private var numPolizasHogar = 100000
+        private fun generateId() = numPolizasHogar++
 
         fun crearSeguro(datos: List<String>): SeguroHogar {
             val numPoliza = datos[0].toInt()

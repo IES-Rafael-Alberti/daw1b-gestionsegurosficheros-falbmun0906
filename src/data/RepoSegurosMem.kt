@@ -8,26 +8,27 @@ open class RepoSegurosMem() : IRepoSeguros {
     protected val seguros = mutableListOf<Seguro>()
 
     override fun agregar(seguro: Seguro): Boolean {
-        TODO("Not yet implemented")
+        return seguros.add(seguro)
     }
 
     override fun buscar(numPoliza: Int): Seguro? {
-        TODO("Not yet implemented")
+        return seguros.find { it.numPoliza == numPoliza }
     }
 
     override fun eliminar(seguro: Seguro): Boolean {
-        TODO("Not yet implemented")
+        return seguros.remove(seguro)
     }
 
     override fun eliminar(numPoliza: Int): Boolean {
-        TODO("Not yet implemented")
+        val seguro = buscar(numPoliza)
+        return seguro != null && eliminar(seguro)
     }
 
     override fun obtenerTodos(): List<Seguro> {
-        TODO("Not yet implemented")
+        return seguros.toList()
     }
 
     override fun obtener(tipoSeguro: String): List<Seguro> {
-        TODO("Not yet implemented")
+        return seguros.filter { it.tipoSeguro() == tipoSeguro }
     }
 }

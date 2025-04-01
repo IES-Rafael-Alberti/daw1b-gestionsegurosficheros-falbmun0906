@@ -1,16 +1,19 @@
 package data
 
 import model.Usuario
+import utils.IUtilFicheros
+import utils.utilFicheros
+import java.io.File
 
 class RepoUsuariosFich(private val rutaArchivo: String,
                        private val fich: IUtilFicheros
 ) : RepoUsuarioMem(), ICargarUsuariosIniciales {
 
     override fun agregar(usuario: Usuario): Boolean {
-        if (buscar(usuario.nombre) != null) {
+        if (!super.agregar(usuario)) {
             return false
         }
-        if (fich.agregarLinea...)
+        return utilFicheros.agregarLinea(rutaArchivo, usuario.serializar())
     }
 
     override fun eliminar(usuario: Usuario): Boolean {
@@ -26,16 +29,25 @@ class RepoUsuariosFich(private val rutaArchivo: String,
     }
 
     override fun cargarUsuarios(): Boolean {
-        val lineas = fich.leearARchivo(rutaArchivo)
+        val archivo = File(rutaArchivo)
 
-        if (lineas.isNotEmpty()) {
-            usuarios.clear()
-            for (linea in lineas) {
+        if (archivo.exists() && archivo.isFile) {
+            val listaStrings = archivo.readLines()
+
+            for (linea in listaStrings) {
                 val datos = linea.split(";")
-                if (datos.size == 3) {
-                    usuarios...
+
+                try {
+                    require(datos.size == 3)
+                } catch (e: IllegalArgumentException) {
+                    return false
                 }
+
+                val usuario = Usuario.crearUsuario(datos)
+                usuarios.add(usuario)
             }
+            return true
         }
+        return false
     }
 }
