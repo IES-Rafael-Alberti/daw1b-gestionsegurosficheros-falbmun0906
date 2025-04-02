@@ -7,33 +7,39 @@ import utils.IUtilSeguridad
 
 class GestorUsuarios(private val repoUsuarios: IRepoUsuarios,
                      private val utilSeguridad: IUtilSeguridad
-) : IServUsuarios, IUtilSeguridad {
+) : IServUsuarios {
 
     override fun iniciarSesion(nombre: String, clave: String): Perfil? {
-        repoUsuarios.buscar(nombre)
+        val usuario = repoUsuarios.buscar(nombre)
+        if (usuario != null && clave == usuario.clave) {
+            return usuario.perfil
+        } else return null
     }
 
     override fun agregarUsuario(nombre: String, clave: String, perfil: Perfil): Boolean {
-        TODO("Not yet implemented")
+        val usuario = Usuario(nombre, utilSeguridad.encriptarClave((clave)), perfil)
+        if (usuario in repoUsuarios.obtenerTodos())
+            return false
+        return repoUsuarios.agregar(usuario)
     }
 
     override fun eliminarUsuario(nombre: String): Boolean {
-        TODO("Not yet implemented")
+        return repoUsuarios.eliminar(nombre)
     }
 
     override fun cambiarClave(usuario: Usuario, nuevaClave: String): Boolean {
-        TODO("Not yet implemented")
+        return repoUsuarios.cambiarClave(usuario, nuevaClave)
     }
 
     override fun buscarUsuario(nombre: String): Usuario? {
-        TODO("Not yet implemented")
+        return repoUsuarios.buscar(nombre)
     }
 
     override fun consultarTodos(): List<Usuario> {
-        TODO("Not yet implemented")
+        return repoUsuarios.obtenerTodos()
     }
 
     override fun consultarPorPerfil(perfil: Perfil): List<Usuario> {
-        TODO("Not yet implemented")
+        return repoUsuarios.obtener(perfil)
     }
 }

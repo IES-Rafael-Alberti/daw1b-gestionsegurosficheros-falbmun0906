@@ -1,12 +1,12 @@
 package service
 
-import model.Auto
-import model.Cobertura
-import model.Riesgo
-import model.Seguro
+import data.IRepoSeguros
+import data.IRepoUsuarios
+import model.*
 import java.time.LocalDate
 
-class GestorSeguros : IServSeguros {
+class GestorSeguros(private val repoSeguros: IRepoSeguros) : IServSeguros {
+
     override fun contratarSeguroHogar(
         dniTitular: String,
         importe: Double,
@@ -15,7 +15,7 @@ class GestorSeguros : IServSeguros {
         direccion: String,
         anioConstruccion: Int
     ): Boolean {
-        TODO("Not yet implemented")
+        return repoSeguros.agregar(SeguroHogar(dniTitular, importe, metrosCuadrados, valorContenido, direccion, anioConstruccion))
     }
 
     override fun contratarSeguroAuto(
@@ -28,7 +28,7 @@ class GestorSeguros : IServSeguros {
         asistenciaCarretera: Boolean,
         numPartes: Int
     ): Boolean {
-        TODO("Not yet implemented")
+        return repoSeguros.agregar(SeguroAuto(dniTitular, importe, descripcion, combustible, tipoAuto, cobertura, asistenciaCarretera, numPartes))
     }
 
     override fun contratarSeguroVida(
@@ -38,18 +38,18 @@ class GestorSeguros : IServSeguros {
         nivelRiesgo: Riesgo,
         indemnizacion: Double
     ): Boolean {
-        TODO("Not yet implemented")
+        return repoSeguros.agregar(SeguroVida(dniTitular, importe, fechaNacimiento, nivelRiesgo, indemnizacion))
     }
 
     override fun eliminarSeguro(numPoliza: Int): Boolean {
-        TODO("Not yet implemented")
+        return repoSeguros.eliminar(numPoliza)
     }
 
     override fun consultarTodos(): List<Seguro> {
-        TODO("Not yet implemented")
+        return repoSeguros.obtenerTodos()
     }
 
     override fun consultarPorTipo(tipoSeguro: String): List<Seguro> {
-        TODO("Not yet implemented")
+        return repoSeguros.obtener(tipoSeguro)
     }
 }
