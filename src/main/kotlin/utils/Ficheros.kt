@@ -13,8 +13,8 @@ class Ficheros : IUtilFicheros {
                 throw IOException("El archivo no existe: $ruta")
             }
             archivo.readLines()
-        } catch (e: IOException) {
-            throw e
+        } catch (e: Exception) {
+            throw Exception("Se produjo un error al leer el archivo \"$ruta\": ${e.message}")
         }
     }
 
@@ -28,13 +28,11 @@ class Ficheros : IUtilFicheros {
         }
     }
 
-    override fun <T: IExportable> escribirArchivo(ruta: String, elementos: List<String>): Boolean {
+    override fun <T: IExportable> escribirArchivo(ruta: String, elementos: List<T>): Boolean {
+        val archivo = File(ruta)
         return try {
-            val archivo = File(ruta)
-            archivo.writeText("")
-            elementos.forEach { linea ->
-                archivo.appendText(linea + "\n")
-            }
+            val contenido = elementos.joinToString("\n") { it.serializar() }
+            archivo.writeText(contenido)
             true
         } catch (e: IOException) {
             throw e

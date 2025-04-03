@@ -33,5 +33,4 @@ class Seguridad : IUtilSeguridad {
     override fun verificarClave(claveIngresada: String, hashAlmacenado: String): Boolean {
         return BCrypt.verifyer().verify(claveIngresada.toCharArray(), hashAlmacenado).verified
     }
-
 }

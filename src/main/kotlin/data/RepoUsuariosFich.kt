@@ -28,24 +28,18 @@ class RepoUsuariosFich(private val rutaArchivo: String,
     }
 
     override fun cargarUsuarios(): Boolean {
-        val archivo = File(rutaArchivo)
+        val lineas = fich.leerArchivo(rutaArchivo)
 
-        if (archivo.exists() && archivo.isFile) {
-            val listaStrings = archivo.readLines()
-
-            for (linea in listaStrings) {
+        if (lineas.isNotEmpty()) {
+            usuarios.clear()
+            for (linea in lineas) {
                 val datos = linea.split(";")
-
-                try {
-                    require(datos.size == 3)
-                } catch (e: IllegalArgumentException) {
-                    return false
+                if (datos.size == 3) {
+                    val usuario = Usuario.crearUsuario(datos)
+                    usuarios.add(usuario)
+                    return true
                 }
-
-                val usuario = Usuario.crearUsuario(datos)
-                usuarios.add(usuario)
             }
-            return true
         }
         return false
     }

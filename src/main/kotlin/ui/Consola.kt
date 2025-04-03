@@ -1,9 +1,10 @@
 package org.example.ui
 
-import jdk.internal.org.jline.reader.EndOfFileException
-import jdk.internal.org.jline.reader.LineReaderBuilder
-import jdk.internal.org.jline.reader.UserInterruptException
-import jdk.internal.org.jline.terminal.TerminalBuilder
+import org.jline.reader.EndOfFileException
+import org.jline.reader.LineReaderBuilder
+import org.jline.reader.UserInterruptException
+import org.jline.terminal.TerminalBuilder
+
 
 class Consola : IEntradaSalida {
 
@@ -75,7 +76,7 @@ class Consola : IEntradaSalida {
     override fun pedirInfoOculta(prompt: String): String {
         return try {
             val terminal = TerminalBuilder.builder()
-                .dumb(true) // Para entornos no interactivos como IDEs
+                .dumb(true)
                 .build()
 
             val reader = LineReaderBuilder.builder()

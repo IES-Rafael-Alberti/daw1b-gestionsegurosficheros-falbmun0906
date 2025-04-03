@@ -28,7 +28,7 @@ class GestorUsuarios(private val repoUsuarios: IRepoUsuarios,
     }
 
     override fun cambiarClave(usuario: Usuario, nuevaClave: String): Boolean {
-        return repoUsuarios.cambiarClave(usuario, nuevaClave)
+        return repoUsuarios.cambiarClave(usuario, utilSeguridad.encriptarClave(nuevaClave))
     }
 
     override fun buscarUsuario(nombre: String): Usuario? {
