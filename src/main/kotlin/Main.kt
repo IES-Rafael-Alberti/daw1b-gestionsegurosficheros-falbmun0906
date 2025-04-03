@@ -20,7 +20,7 @@ fun main() {
 
     // 2. Instanciamos los componentes base del sistema: la interfaz de usuario, el gestor de ficheros y el módulo de seguridad.
     val ui = Consola()
-    val fichero = Ficheros()
+    val fichero = Ficheros(ui)
     val seguridad = Seguridad()
 
     // 3. Limpiamos la pantalla antes de comenzar, para que la interfaz esté despejada al usuario.
