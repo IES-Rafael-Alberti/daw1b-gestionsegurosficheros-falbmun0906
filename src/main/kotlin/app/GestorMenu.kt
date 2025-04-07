@@ -110,11 +110,19 @@ class GestorMenu(
 
     /** Cambia la contraseña del usuario actual */
     fun cambiarClaveUsuario() {
-        val usuarioActual =
-        val nuevaClave = ui.pedirInfoOculta("Introduce la nueva clave para ${usuarioActual.nombre}:")
+        val nuevaClave = ui.pedirInfoOculta("Ingrese la nueva contraseña: ")
+        val usuario = gestorUsuarios.buscarUsuario(nombreUsuario)
 
-        gestorUsuarios.cambiarClave(usuarioActual, nuevaClave)
-        ui.mostrar("Contraseña cambiada exitosamente.", true, false)
+        if (usuario != null) {
+            val usuarioClaveCambiada = gestorUsuarios.cambiarClave(usuario, nuevaClave)
+            if (usuarioClaveCambiada) {
+                ui.mostrar("Contraseña cambiada exitosamente.")
+            } else {
+                ui.mostrarError("No se pudo cambiar la contraseña.")
+            }
+        } else {
+            ui.mostrarError("Usuario no encontrado.")
+        }
     }
 
     /**

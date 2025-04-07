@@ -16,15 +16,10 @@ class RepoUsuariosFich(private val rutaArchivo: String,
     }
 
     override fun eliminar(usuario: Usuario): Boolean {
-        if (fich.escribirArchivo<Usuario>(rutaArchivo, usuarios.filter { it != usuario }.map { it.serializar() })) {
+        if (fich.escribirArchivo(rutaArchivo, usuarios.filter { it != usuario })) {
             return super.eliminar(usuario)
         }
         return false
-    }
-
-    override fun cambiarClave(usuario: Usuario, nuevaClave: String): Boolean {
-        usuario.cambiarClave(nuevaClave)
-        return fich.escribirArchivo<Usuario>(rutaArchivo, usuarios.map { it.serializar() })
     }
 
     override fun cargarUsuarios(): Boolean {

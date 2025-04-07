@@ -42,10 +42,11 @@ class ControlAcceso(private val rutaArchivo: String,
      *
      * @return Un par (nombreUsuario, perfil) si el acceso fue exitoso, o `null` si el usuario cancela el acceso.
      */
-    fun autenticar(): Pair<String, Perfil>? {
-        ui.limpiarPantalla()
-
-        if (!verificarFicheroUsuarios()) return null
+    fun autenticar(): Pair<String, String>? {
+        if (!verificarFicheroUsuarios()) {
+            return null
+        }
+        return iniciarSesion()
     }
 
     /**
@@ -59,17 +60,18 @@ class ControlAcceso(private val rutaArchivo: String,
      * @return `true` si el proceso puede continuar (hay al menos un usuario),
      *         `false` si el usuario cancela la creación inicial o ocurre un error.
      */
-    private fun verificarFicheroUsuarios() {
-        try {
-            if (!ficheros.existeFichero(rutaArchivo) || ficheros.leerArchivo((rutaArchivo))) {
-                ui.mostrar("No hay usuaruios regiistrtrados")
-                if (ui.preguntar("¿Deseas crear un usuairoo ADMIN para iniciar?")) {
-                    val nombre = ui.pedirInfo("Introduce nombre de usuario")
-                    val clave = ui.pedirInfo("")
-                        ...
-                }
+    private fun verificarFicheroUsuarios(): Boolean {
+        if (!ficheros.existeFichero(rutaArchivo) || ficheros.leerArchivo(rutaArchivo).isEmpty()) {
+            ui.mostrar("No existen usuarios registrados. Debe crear un usuario ADMIN inicial.")
+            return if (ui.preguntar("¿Desea registrar un usuario ADMIN?")) {
+                val nombre = ui.pedirInfo("Ingrese el nombre del admin: ")
+                val clave = ui.pedirInfoOculta("Ingrese la contraseña: ")
+                gestorUsuarios.agregarUsuario(nombre, clave, Perfil.ADMIN)
+            } else {
+                false
             }
         }
+        return true
     }
 
     /**
@@ -81,28 +83,20 @@ class ControlAcceso(private val rutaArchivo: String,
      * @return Un par (nombreUsuario, perfil) si las credenciales son correctas,
      *         o `null` si el usuario decide no continuar.
      */
-    private fun iniciarSesion(): Pair<String, Perfil>? {
-        while (true) {
-            val usuario = ui.pedirInfo("Introduzca su username o 'x' para salir > ")
+    private fun iniciarSesion(): Pair<String, String>? {
+        do {
+            val nombre = ui.pedirInfo("Usuario: ")
+            val clave = ui.pedirInfoOculta("Contraseña: ")
+            val perfil = gestorUsuarios.iniciarSesion(nombre, clave)
 
-            if (usuario == "x") {
-                return null
-            }
-
-            val pwd = ui.pedirInfo("Introduzca su contraseña o 'x' para salir > ")
-
-            if (pwd == "x") {
-                return null
-            }
-
-            val user = gestorUsuarios.buscarUsuario(usuario)
-
-            if (user != null && user.clave == pwd) {
-                return Pair(user.nombre, user.perfil)
+            if (perfil != null) {
+                ui.mostrar("Acceso concedido. Bienvenido, $nombre.")
+                return nombre to perfil.toString()
             } else {
-                ui.mostrarError("Fallo al iniciar sesión. Inténtalo de nuevo.")
+                ui.mostrarError("Credenciales incorrectas. Intente nuevamente.")
+                if (!ui.preguntar("¿Desea intentar nuevamente?")) return null
             }
-        }
+        } while (true)
     }
 
 }

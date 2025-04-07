@@ -20,10 +20,10 @@ class RepoSegurosFich(private val rutaArchivo: String,
     }
 
     override fun eliminar(seguro: Seguro): Boolean {
-        if (!super.eliminar(seguro)) {
-            return false
+        if (fich.escribirArchivo(rutaArchivo, seguros.filter { it != seguro })) {
+            return super.eliminar(seguro)
         }
-        return fich.escribirArchivo<Seguro>(rutaArchivo, obtenerTodos().map { it.serializar() })
+        return false
     }
 
     override fun cargarSeguros(mapa: Map<String, (List<String>) -> Seguro>): Boolean {
